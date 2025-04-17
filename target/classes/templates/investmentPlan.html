@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Investment Plan</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h2>Monthly Investment Plan</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Stock Name</th>
+                <th>Sector</th>
+                <th>Monthly Investment (₹)</th>
+                <th>Dividend Yield (%)</th>
+                <th>Annual Dividend (₹)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="plan : ${plans}">
+                <td th:text="${plan.stockName}"></td>
+                <td th:text="${plan.sector}"></td>
+                <td th:text="${plan.monthlyAmount}"></td>
+                <td th:text="${plan.dividendYield}"></td>
+                <td th:text="${plan.annualDividend}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
