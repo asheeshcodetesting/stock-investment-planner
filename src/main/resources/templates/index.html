@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Smart Stock Investment Planner</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+</head>
+<body class="bg-light">
+<div class="container mt-4">
+  <h1 class="text-center mb-4">📈 Smart Stock Investment Planner</h1>
+
+  <div class="card p-4 mb-4">
+    <h4>🧠 Get Personalized Investment Advice</h4>
+    <form action="/investment-plan" method="get">
+      <div class="row mb-3">
+        <div class="col">
+          <label for="age" class="form-label">Your Age</label>
+          <input type="number" class="form-control" id="age" name="age" value="35" required />
+        </div>
+        <div class="col">
+          <label for="amount" class="form-label">Monthly Investment (₹)</label>
+          <input type="number" class="form-control" id="amount" name="amount" value="50000" required />
+        </div>
+        <div class="col">
+          <label for="risk" class="form-label">Risk Appetite</label>
+          <select class="form-select" name="risk">
+            <option value="">Any</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+        <div class="col">
+          <label for="portfolioType" class="form-label">Portfolio Focus</label>
+          <select class="form-select" name="portfolioType">
+            <option value="">Any</option>
+            <option value="Growth">Growth</option>
+            <option value="Balanced">Balanced</option>
+            <option value="Dividend">Dividend</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">🔍 Show My Investment Plan</button>
+    </form>
+  </div>
+
+<!-- TradingView Widget BEGIN -->
+<div class="card p-4 mb-4" th:utext="${sensexWidget}"></div>
+
+<!-- TradingView Widget END -->
+
+
+<script>
+  function loadData() {
+      fetch('/api/market/nifty50')
+          .then(res => res.json())
+          .then(data => {
+              document.getElementById("nifty-data").textContent = JSON.stringify(data.data, null, 2);
+          });
+
+      fetch('/api/market/top-gainers')
+          .then(res => res.json())
+          .then(data => {
+              document.getElementById("gainers-data").textContent = JSON.stringify(data.data, null, 2);
+          });
+
+      fetch('/api/market/top-losers')
+          .then(res => res.json())
+          .then(data => {
+              document.getElementById("losers-data").textContent = JSON.stringify(data.data, null, 2);
+          });
+  }
+
+  loadData();
+</script>
+</body>
+</html>

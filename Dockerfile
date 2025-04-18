@@ -1,14 +1,10 @@
-# Use a lightweight OpenJDK image
-FROM openjdk:17-jdk-slim
-
-# Set working directory inside the container
+FROM maven:3.9.5-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copy the jar file (you must build it before pushing!)
-COPY target/stock-investment-planner-1.0.0.jar app.jar
-
-# Expose port 8080
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/stock-investment-planner-1.0.0.jar app.jar
 EXPOSE 8080
-
-# Run the jar
 ENTRYPOINT ["java", "-jar", "app.jar"]

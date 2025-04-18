@@ -1,85 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Investment Plan Recommendation</title>
+    <title>Stock Investment Planner</title>
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f8f9fa;
-            padding: 30px;
-            color: #333;
-        }
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .description {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
-        }
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-        th {
-            background-color: #007bff;
-            color: white;
-        }
-        .footer-note {
-            font-size: 0.9rem;
-            margin-top: 25px;
-            color: #555;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { color: #2c3e50; }
+        form { margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th { background-color: #f5f5f5; }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Personalized Investment Plan</h1>
-    <div class="description">
-        <p><strong>Profile:</strong> Investor aged 35, Monthly Budget: ₹50,000</p>
-        <p>This is our first stock recommendation plan tailored for a long-term investor aiming for wealth creation with sustainable growth and regular dividends.</p>
-        <p>We’ve selected one stock each from major sectors across large-cap and mid-cap categories, focusing on high dividend yield, strong financials, and companies with at least 100% return since April 2020. The selected stocks come from <strong>Nifty Dividend Opportunities 50</strong> and <strong>Nifty 500</strong> indices.</p>
-    </div>
+<h2>Personalized Investment Plan</h2>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Stock Name</th>
-            <th>Sector</th>
-            <th>Monthly Investment (₹)</th>
-            <th>Dividend Yield (%)</th>
-            <th>Estimated Annual Dividend (₹)</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="plan : ${plans}">
-            <td th:text="${plan.stockName}"></td>
-            <td th:text="${plan.sector}"></td>
-            <td th:text="${plan.monthlyAmount}"></td>
-            <td th:text="${plan.dividendYield}"></td>
-            <td th:text="${plan.annualDividend}"></td>
-        </tr>
-        </tbody>
-    </table>
+<form method="get" action="/investment-plan">
+    <label>Age:</label>
+    <input type="number" name="age" value="35" min="18" max="100" required />
 
-    <div class="footer-note">
-        Note: Dividend values are estimated based on current yield. Returns and allocations are subject to change based on market conditions.
-    </div>
-</div>
+    <label>Risk Level:</label>
+    <select name="risk">
+        <option value="">Any</option>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+    </select>
+
+    <label>Portfolio Type:</label>
+    <select name="portfolioType">
+        <option value="">Any</option>
+        <option value="Growth">Growth</option>
+        <option value="Balanced">Balanced</option>
+        <option value="Dividend">Dividend</option>
+    </select>
+
+    <label>Total Monthly Investment:</label>
+    <input type="number" name="amount" value="50000" min="1000" required />
+
+    <button type="submit">Get Plan</button>
+</form>
+
+<h3>Investment Plan for Age <span th:text="${age}"></span>, Monthly <span th:text="${amount}"></span></h3>
+
+<table>
+    <thead>
+    <tr>
+        <th>Stock</th>
+        <th>Sector</th>
+        <th>Monthly Allocation Rs</th>
+        <th>Dividend Yield (%)</th>
+        <th>Annual Dividend </th>
+        <th>Risk</th>
+        <th>Portfolio Type</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="plan : ${plans}">
+        <td th:text="${plan.stockName}"></td>
+        <td th:text="${plan.sector}"></td>
+        <td>Rs<span th:text="${plan.monthlyAmount}"></span></td>
+        <td th:text="${plan.dividendYield}"></td>
+        <td>Rs<span th:text="${plan.annualDividend}"></span></td>
+        <td th:text="${plan.riskLevel}"></td>
+        <td th:text="${plan.portfolioType}"></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
